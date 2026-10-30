@@ -1,0 +1,64 @@
+# EDISTMS EDISTMSSW: the canonical ship recipe (/home-rerooted via
+# config_v4_ship_MIMOWSW.yaml with its seed/fuse lines REMOVED; student block=selfwarp) with ONLY
+# variant/desc/checkpoint/distill_ckpt changed.  The single mechanism delta is
+# distill_ckpt: the champion's single ship RLB128 teacher is replaced by the
+# 3-member SHIP fleet unet_v4_ship_WSW + unet_v4_ship_MIMOA + unet_v4_ship_MIMOWSW, whose uniform MEAN is the soft target
+# (train_v4.py:2044-2048).  Teachers are SHIP checkpoints, never _kf_ folds:
+# XDC_kf_f3/WSW_kf_f3/MIMOAs1_kf_f3 train on BOTH val Reynolds groups (11400 and
+# 17775), so a fold teacher leaks the entire 378-window scoring stream.
+#
+variant: UNet_v4_ship_EDISTMSSW
+desc: v4_ship_EDISTMSSW
+sub_s: 2
+t_in: 20
+t_out: 20
+unet_base: 128
+batch_size: 16
+eval_every: 250
+train_stride: 10
+ema_decay: 0.999
+loss_channels: 2
+grad_clip: 1.0
+weight_decay: 1.0e-05
+exclude_re:
+- 11400
+- 17775
+loss_type: rel_l2
+l2_normalize: true
+n_roll: 1
+tke_weight: 0.0
+mvpe_weight: 0.0
+save_last: true
+stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+val_glob: data/RealPDE_competition_dataset/gdrive_raw/local_bench/val/test_real/*.h5
+n_val_files: 999
+checkpoint: checkpoints/t1_u-net/unet_v4_ship_EDISTMSSW.pth
+stages:
+- name: sim-pretrain
+  steps: 6000
+  lr: 0.001
+  sources:
+  - tag: comp_sim
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_sim/train_sim/*.h5
+    stats: data/RealPDE_competition_dataset/mean_std_comp_sim.pt
+    stride: 20
+    n_files: 9999
+- name: real-finetune
+  steps: 20000
+  lr: 0.002
+  sources:
+  - tag: comp_real
+    glob: data/RealPDE_competition_dataset/gdrive_raw/local_bench/train/test_real/*.h5
+    stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+    stride: 10
+    n_files: 9999
+in_norm: self
+block: selfwarp
+cond: stats
+distill_weight: 0.5
+distill_ckpt: checkpoints/t1_u-net/unet_v4_ship_WSW.pth,checkpoints/t1_u-net/unet_v4_ship_MIMOA.pth,checkpoints/t1_u-net/unet_v4_ship_MIMOWSW.pth
+chan_weight: 8.188,0.22255
+# MIMOWSW: the canonical WSW ship recipe (config_v4_ship_WSW.yaml) rerooted to
+# /home, + ONLY the two lines below (ship configs have no seed line; the ARCH
+# knob passes via the fuse dict ONLY -- the D1/gridfix copy-list lesson).
+seed: 0

@@ -1,0 +1,18 @@
+{
+  "purpose": "Rebuild the three distinct neural members shipped by T1 v185 and T2 v156g from the released data. This is the shared model subgraph, not a complete submission pipeline.",
+  "data_policy": "Only the released RealPDE competition sim/real files; 7575_0 excluded from the all81 pool. Fixed source recipes and terminal checkpoint choices.",
+  "nodes": [
+    {"id": "rlb72", "source": "Track1/U-net/configs/config_v4_ship_RLB128.yaml", "trainer": "Track1/U-net/train_v4.py", "parents": [], "real_pool": "ship72", "terminal": false},
+    {"id": "ad_wsw", "source": "Track1/U-net/configs/config_v4_ship_WSW.yaml", "trainer": "Track1/U-net/train_v4.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": false},
+    {"id": "ad_mimoa", "source": "Track1/U-net/configs/config_v4_ship_MIMOA.yaml", "trainer": "Track1/U-net/train_v4.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": false},
+    {"id": "ad_mimowsw", "source": "Track1/U-net/configs/config_v4_ship_MIMOWSW.yaml", "trainer": "Track1/U-net/train_v4.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": false},
+    {"id": "tst5_wsw", "source": "Track1/U-net/VariantRetrainPush/config/all81/TST5_WSW.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": true},
+    {"id": "tst5_mimoa", "source": "Track1/U-net/VariantRetrainPush/config/all81/TST5_MIMOA.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": true},
+    {"id": "tst5_mimowsw", "source": "Track1/U-net/VariantRetrainPush/config/all81/TST5_MIMOWSW.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["rlb72"], "real_pool": "all81", "terminal": true},
+    {"id": "ra3_h", "source": "Track1/U-net/VariantRetrainPush/config/all81/T2RA3_H.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["ad_wsw", "ad_mimoa", "ad_mimowsw"], "real_pool": "all81", "terminal": true},
+    {"id": "ra3_sw", "source": "Track1/U-net/VariantRetrainPush/config/all81/T2RA3_SW.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["ad_wsw", "ad_mimoa", "ad_mimowsw"], "real_pool": "all81", "terminal": true},
+    {"id": "t1_geg_h", "source": "Track1/U-net/VariantRetrainPush/config/all81/T1GEG_H.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["ad_wsw", "ad_mimoa", "ad_mimowsw"], "real_pool": "all81", "terminal": true, "ships_as": ["T1:model.pth"]},
+    {"id": "t2_phk_h", "source": "Track1/U-net/VariantRetrainPush/config/all81/T2PHK_H.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["ad_wsw", "ad_mimoa", "ad_mimowsw", "ra3_h", "ra3_sw"], "real_pool": "all81", "terminal": true, "ships_as": ["T2:model.pth"]},
+    {"id": "t2_ptk_sw", "source": "Track1/U-net/VariantRetrainPush/config/all81/T2PTK_SW.yaml", "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py", "parents": ["tst5_wsw", "tst5_mimoa", "tst5_mimowsw", "ra3_h", "ra3_sw"], "real_pool": "all81", "terminal": true, "ships_as": ["T1:model_1.pth", "T2:model2.pth"]}
+  ]
+}

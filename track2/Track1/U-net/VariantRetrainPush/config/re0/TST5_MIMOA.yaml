@@ -1,0 +1,212 @@
+variant: FF_re0__outer__retrainpush_TST5__MIMOA
+desc: FF_re0__outer__retrainpush_TST5__MIMOA
+sub_s: 2
+t_in: 20
+t_out: 20
+unet_base: 128
+batch_size: 16
+eval_every: 250
+train_stride: 10
+ema_decay: 0.999
+loss_channels: 2
+grad_clip: 1.0
+weight_decay: 1.0e-05
+exclude_re: []
+loss_type: rel_l2
+l2_normalize: true
+n_roll: 1
+tke_weight: 0.0
+mvpe_weight: 0.0
+save_last: false
+stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+n_val_files: 999
+checkpoint: checkpoints/simincl_v1/re0/TST5_MIMOA.pth
+stages:
+- name: sim-pretrain
+  steps: 6000
+  lr: 0.001
+  sources:
+  - tag: comp_sim
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_sim/train_sim/*.h5
+    stats: data/RealPDE_competition_dataset/mean_std_comp_sim.pt
+    stride: 20
+    n_files: 9999
+    keep_files:
+    - 10125_0.h5
+    - 10125_10.h5
+    - 10125_15.h5
+    - 10125_20.h5
+    - 10125_5.h5
+    - 11400_0.h5
+    - 11400_10.h5
+    - 11400_15.h5
+    - 11400_20.h5
+    - 11400_5.h5
+    - 12675_0.h5
+    - 12675_10.h5
+    - 12675_15.h5
+    - 12675_20.h5
+    - 12675_5.h5
+    - 13950_0.h5
+    - 13950_10.h5
+    - 13950_15.h5
+    - 13950_20.h5
+    - 13950_5.h5
+    - 15225_0.h5
+    - 15225_10.h5
+    - 15225_15.h5
+    - 15225_20.h5
+    - 15225_5.h5
+    - 16500_0.h5
+    - 16500_10.h5
+    - 16500_15.h5
+    - 16500_20.h5
+    - 16500_5.h5
+    - 17775_0.h5
+    - 17775_10.h5
+    - 17775_15.h5
+    - 17775_20.h5
+    - 17775_5.h5
+    - 19050_0.h5
+    - 19050_10.h5
+    - 19050_15.h5
+    - 19050_20.h5
+    - 19050_5.h5
+    - 20325_0.h5
+    - 20325_10.h5
+    - 20325_15.h5
+    - 20325_20.h5
+    - 20325_5.h5
+    - 21600_0.h5
+    - 21600_10.h5
+    - 21600_15.h5
+    - 21600_20.h5
+    - 21600_5.h5
+    - 22875_0.h5
+    - 22875_10.h5
+    - 22875_15.h5
+    - 22875_20.h5
+    - 22875_5.h5
+    - 24150_0.h5
+    - 24150_10.h5
+    - 24150_15.h5
+    - 24150_20.h5
+    - 24150_5.h5
+    - 25425_0.h5
+    - 25425_10.h5
+    - 25425_15.h5
+    - 25425_20.h5
+    - 25425_5.h5
+    - 26700_0.h5
+    - 26700_10.h5
+    - 26700_15.h5
+    - 26700_20.h5
+    - 26700_5.h5
+    - 27975_0.h5
+    - 27975_10.h5
+    - 27975_15.h5
+    - 27975_20.h5
+    - 27975_5.h5
+    - 3750_0.h5
+    - 3750_10.h5
+    - 3750_15.h5
+    - 3750_20.h5
+    - 3750_5.h5
+    - 5025_0.h5
+    - 5025_10.h5
+    - 5025_15.h5
+    - 5025_20.h5
+    - 5025_5.h5
+    - 6300_0.h5
+    - 6300_10.h5
+    - 6300_15.h5
+    - 6300_20.h5
+    - 6300_5.h5
+    - 7575_0.h5
+    - 7575_10.h5
+    - 7575_15.h5
+    - 7575_20.h5
+    - 7575_5.h5
+    - 8850_0.h5
+    - 8850_10.h5
+    - 8850_15.h5
+    - 8850_20.h5
+    - 8850_5.h5
+    fold_exclude: false
+- name: real-finetune
+  steps: 20000
+  lr: 0.002
+  sources:
+  - tag: comp_real
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_real/train_real/*.h5
+    stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+    stride: 5
+    n_files: 9999
+    keep_files:
+    - 5025_0.h5
+    - 5025_5.h5
+    - 5025_10.h5
+    - 5025_15.h5
+    - 5025_20.h5
+    - 6300_0.h5
+    - 6300_5.h5
+    - 6300_10.h5
+    - 6300_15.h5
+    - 6300_20.h5
+    - 7575_5.h5
+    - 7575_10.h5
+    - 7575_15.h5
+    - 7575_20.h5
+    - 10125_0.h5
+    - 10125_5.h5
+    - 10125_10.h5
+    - 10125_15.h5
+    - 10125_20.h5
+    - 12675_0.h5
+    - 12675_5.h5
+    - 12675_10.h5
+    - 12675_15.h5
+    - 12675_20.h5
+    - 13950_0.h5
+    - 13950_5.h5
+    - 13950_10.h5
+    - 13950_15.h5
+    - 13950_20.h5
+    - 16500_0.h5
+    - 16500_5.h5
+    - 16500_10.h5
+    - 16500_15.h5
+    - 16500_20.h5
+    - 19050_0.h5
+    - 19050_5.h5
+    - 19050_10.h5
+    - 19050_15.h5
+    - 19050_20.h5
+    - 21600_0.h5
+    - 21600_5.h5
+    - 21600_10.h5
+    - 21600_15.h5
+    - 21600_20.h5
+    - 22875_0.h5
+    - 22875_10.h5
+    - 22875_15.h5
+    - 24150_0.h5
+    - 24150_10.h5
+    - 24150_15.h5
+    - 24150_20.h5
+    - 26700_0.h5
+    - 26700_10.h5
+    - 26700_15.h5
+in_norm: self
+block: convnext
+cond: stats
+distill_weight: 0.5
+distill_ckpt: checkpoints/simincl_v1/re0/RLB_f0_terminal_ema.pth
+chan_weight: 8.188,0.22255
+seed: 0
+fuse:
+  mimo: 2
+kfold_manifest: Track1/U-net/VariantFiveFoldEvaluation/config/manifests/re0_outer.json
+fold: 0
+save_terminal_both: true
+logger_root: Track1/U-net/VariantRetrainPush/Logger/20260925/re0__TST5_MIMOA_run

@@ -1,0 +1,8 @@
+{
+  "purpose": "Rebuild the 12 Re-OOF RLB/AD teacher checkpoints consumed by the v185 SBAND2 ship head, from released data and fixed outer-fold recipes.",
+  "folds": ["re0", "re1", "re2"],
+  "roles": ["RLB", "WSW", "MIMOA", "MIMOWSW"],
+  "source_template": "Track1/U-net/VariantFiveFoldEvaluation/config/{fold}/outer/LIVE/{role}.yaml",
+  "trainer": "Track1/U-net/train_v4.py",
+  "selection": "fixed terminal EMA, not validation-selected"
+}

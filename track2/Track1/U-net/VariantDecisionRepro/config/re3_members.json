@@ -1,0 +1,15 @@
+{
+  "purpose": "Rebuild the fixed Re3 outer-fold current members for v185 SPSR and v156g prior-source reproduction, sharing the completed RLB/AD teacher graph used by SBAND2.",
+  "folds": ["re0", "re1", "re2"],
+  "trainer": "Track1/U-net/VariantRetrainPush/train_objective.py",
+  "nodes": [
+    {"role": "TST5_WSW", "parents": ["RLB"]},
+    {"role": "TST5_MIMOA", "parents": ["RLB"]},
+    {"role": "TST5_MIMOWSW", "parents": ["RLB"]},
+    {"role": "T2RA3_H", "parents": ["WSW", "MIMOA", "MIMOWSW"]},
+    {"role": "T2RA3_SW", "parents": ["WSW", "MIMOA", "MIMOWSW"]},
+    {"role": "T1GEG_H", "parents": ["WSW", "MIMOA", "MIMOWSW"]},
+    {"role": "T2PHK_H", "parents": ["WSW", "MIMOA", "MIMOWSW", "T2RA3_H", "T2RA3_SW"]},
+    {"role": "T2PTK_SW", "parents": ["TST5_WSW", "TST5_MIMOA", "TST5_MIMOWSW", "T2RA3_H", "T2RA3_SW"]}
+  ]
+}

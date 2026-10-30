@@ -1,0 +1,79 @@
+{
+  "schema": "live_card_anchors_v1",
+  "generated_utc": "2026-09-12T14:31:04Z",
+  "generated_by": "common/live_card.py --dump-anchors",
+  "why": "the live card zips live under Track*/submissions/, which .gitignore excludes, so a clean clone has no zip and live_card.py cannot resolve the card.  The Decision Phase accepts training code only, no weights, so the organizers' environment has no zip either.  This file records the identity as numbers and hashes: name, zip md5, the four accuracy anchors, the T2 ONLINE knob dict, the repo-relative template path, and every shipped artifact's md5.  Regenerate with --dump-anchors whenever LIVE_CARD moves, and commit it in the same edit.",
+  "tracks": {
+    "1": {
+      "name": "t1_v82_alldata",
+      "zip_md5": "b0f96fbc4b2aa7aa39d8fbe75059f362",
+      "template": "Track1/U-net/submission_t1_v79_riders.py",
+      "anchors": {
+        "rel": 97.58,
+        "tke": 84.888,
+        "mvpe": 98.001,
+        "sps": 59.744
+      },
+      "online": null,
+      "artifact_md5": {
+        "calib.npz": "7efa23312c255bbb8900e1be915dccf8",
+        "model.pth": "6dfa2d1816baa86c7091fad79c528e68",
+        "model_1.pth": "6227985e0226114d0b9b7dcbfd0939a3",
+        "sband.pth": "0a7cf0b89acd6de2165b12aff4ebd9f2",
+        "vgain.pth": "d48759f1bcfe5cd0680f1a81e5b4dc57"
+      },
+      "source": {
+        "zip": "Track1/submissions/t1_v82_alldata.zip",
+        "verify_report": "Track1/submissions/t1_v82_alldata/verify_report.json",
+        "notes": [
+          "checkpoint: found in the card directory (no in-repo checkpoint copy on this box)",
+          "extra_checkpoints[0]: found in the card directory (no in-repo checkpoint copy on this box)",
+          "head: found in the card directory (no in-repo checkpoint copy on this box)",
+          "calib: found in the card directory (no in-repo checkpoint copy on this box)",
+          "sband: found in the card directory (no in-repo checkpoint copy on this box)",
+          "template: verified by rendering-equivalence against the zip's submission.py (2 placeholder line(s) substituted, 0 other differences); named by verify_report.json"
+        ]
+      }
+    },
+    "2": {
+      "name": "t2_v58_alldata",
+      "zip_md5": "80e7eac13a2d41bbab535192262b8d55",
+      "template": "Track2/U-net/submission_t2_v55_biasfield.py",
+      "anchors": {
+        "rel": 97.582,
+        "tke": 84.666,
+        "mvpe": 97.999,
+        "sps": 59.632
+      },
+      "online": {
+        "band_beta": 0.1,
+        "warm": 16,
+        "bias_beta": 0.05,
+        "sp_beta": 0.0,
+        "gate_c": 1,
+        "gate_mode": "js",
+        "fld_beta": 0.05,
+        "fld_pyr": 1
+      },
+      "artifact_md5": {
+        "calib.npz": "24dfda79ba87d789c076e6db84ba8ee4",
+        "model.pth": "6dfa2d1816baa86c7091fad79c528e68",
+        "model2.pth": "6227985e0226114d0b9b7dcbfd0939a3",
+        "sband.pth": "2dfdbb705025af5adf229d27a952a582",
+        "vgain.pth": "1abc682bf562b76007c62cd119a2ff3f"
+      },
+      "source": {
+        "zip": "Track2/submissions/t2_v58_alldata.zip",
+        "verify_report": "Track2/submissions/t2_v58_alldata/verify_report.json",
+        "notes": [
+          "checkpoint: found in the card directory (no in-repo checkpoint copy on this box)",
+          "checkpoint2: found in the card directory (no in-repo checkpoint copy on this box)",
+          "head: found in the card directory (no in-repo checkpoint copy on this box)",
+          "calib: found in the card directory (no in-repo checkpoint copy on this box)",
+          "sband: found in the card directory (no in-repo checkpoint copy on this box)",
+          "template: verified by rendering-equivalence against the zip's submission.py (4 placeholder line(s) substituted, 0 other differences); named by verify_report.json"
+        ]
+      }
+    }
+  }
+}

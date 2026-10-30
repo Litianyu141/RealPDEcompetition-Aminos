@@ -1,0 +1,52 @@
+variant: UNet_v4_MIMOA_kf
+desc: v4_MIMOA_kf
+seed: 0
+loss_type: rel_l2
+l2_normalize: true
+n_roll: 1
+tke_weight: 0.0
+mvpe_weight: 0.0
+sub_s: 2
+t_in: 20
+t_out: 20
+unet_base: 128
+batch_size: 16
+eval_every: 250
+train_stride: 10
+ema_decay: 0.999
+loss_channels: 2
+grad_clip: 1.0
+weight_decay: 1.0e-05
+save_last: true
+kfold_manifest: common/local_benchmark/splits_kfold_dedup.json
+kit_dir: Track1/realpde_t1_starting_kit_v6
+stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+checkpoint: checkpoints/t1_u-net/unet_v4_MIMOA_kf.pth
+stages:
+- name: sim-pretrain
+  steps: 6000
+  lr: 0.001
+  sources:
+  - tag: comp_sim
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_sim/train_sim/*.h5
+    stats: data/RealPDE_competition_dataset/mean_std_comp_sim.pt
+    stride: 20
+    n_files: 9999
+- name: real-finetune
+  steps: 10000
+  lr: 0.002
+  sources:
+  - tag: comp_real
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_real/train_real/*.h5
+    stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+    stride: 10
+    n_files: 9999
+in_norm: self
+block: convnext
+cond: stats
+distill_weight: 0.5
+distill_ckpt: checkpoints/t1_u-net/unet_v4_RLB_kf_base128_f{fold}.pth
+chan_weight: 8.188,0.22255
+# MWAVE MIMOA: ARCH knob via the fuse dict ONLY (the D1/gridfix copy-list
+# lesson: a flat key would be SILENTLY DROPPED by train_v4's _arch copy list).
+fuse: {mimo: 2}

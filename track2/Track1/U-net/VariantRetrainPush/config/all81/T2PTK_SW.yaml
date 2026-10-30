@@ -1,0 +1,65 @@
+variant: all81__retrainpush_T2PTK__SW
+desc: all81__retrainpush_T2PTK__SW
+sub_s: 2
+t_in: 20
+t_out: 20
+unet_base: 128
+batch_size: 16
+eval_every: 250
+train_stride: 10
+ema_decay: 0.9995
+loss_channels: 2
+grad_clip: 1.0
+weight_decay: 1.0e-05
+exclude_re: []
+loss_type: rel_l2
+l2_normalize: true
+n_roll: 1
+tke_weight: 0.0
+mvpe_weight: 0.0
+save_last: false
+stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+val_glob: data/RealPDE_competition_dataset/gdrive_raw/local_bench/val/test_real/*.h5
+n_val_files: 999
+checkpoint: checkpoints/retrain_push/all81_T2PTK_SW.pth
+stages:
+- name: sim-pretrain
+  steps: 6000
+  lr: 0.001
+  sources:
+  - tag: comp_sim
+    glob: data/RealPDE_competition_dataset/gdrive_raw/extracted/train_sim/train_sim/*.h5
+    stats: data/RealPDE_competition_dataset/mean_std_comp_sim.pt
+    stride: 20
+    n_files: 9999
+- name: real-finetune
+  steps: 20000
+  lr: 0.002
+  sources:
+  - tag: comp_real
+    glob: data/RealPDE_competition_dataset/gdrive_raw/local_bench/all81/test_real/*.h5
+    stats: Track2/realpde_t2_starting_kit_v4/example_data/mean_std_real.pt
+    stride: 3
+    n_files: 9999
+    phases:
+    - - 0
+      - 0
+    - - 0
+      - 1
+    - - 1
+      - 0
+    - - 1
+      - 1
+in_norm: self
+block: selfwarp
+cond: stats
+distill_weight: 0.5
+distill_ckpt: checkpoints/retrain_push/all81_TST5_WSW_terminal_ema.pth,checkpoints/retrain_push/all81_TST5_MIMOA_terminal_ema.pth,checkpoints/retrain_push/all81_TST5_MIMOWSW_terminal_ema.pth,checkpoints/retrain_push/all81_T2RA3_H_terminal_ema.pth,checkpoints/retrain_push/all81_T2RA3_SW_terminal_ema.pth
+chan_weight: 8.188,0.22255
+seed: 0
+save_terminal_both: true
+logger_root: Track1/U-net/VariantRetrainPush/Logger/20260925/all81__T2PTK_SW_run
+hard_l1_a: 1.0
+reflect_p: 0.3
+otf_stages:
+- real-finetune
